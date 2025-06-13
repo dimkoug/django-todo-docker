@@ -18,7 +18,7 @@ RUN uv pip install -r requirements.txt --system
 COPY src/ .
 
 RUN chmod +x /app/entrypoint.sh
-
+#RUN python manage.py collectstatic --noinput
 EXPOSE 8000
 
 CMD ["./entrypoint.sh"]

@@ -1,19 +1,26 @@
 services:
     web:
         build: .
-        command: gunicorn todoproject.wsgi:application -b 0.0.0.0:8000
+        command: >
+            sh -c "
+            python manage.py migrate --noinput &&
+            python manage.py collectstatic --noinput &&
+            gunicorn todoproject.wsgi:application -b 0.0.0.0:8000
+            "
         healthcheck:
-            test: ["CMD", "curl", "-f", "http://localhost:8000/todo/", "||", "exit", "1"]
+            test: ["CMD-SHELL", "curl -fs http://localhost:8000/todo/ || exit 1"]
             interval: 10s
+            timeout: 3s
             retries: 5
+            start_period: 20s
         expose: ["8000"]
         container_name: django_app
-        ports:
-            - 8000:8000
+        #ports:
+        #    - 8000:8000
         volumes:
             - ./src:/app
-            - static_volume:/app/static
-            - media_volume:/app/media
+            - static_volume:/app/staticfiles      # collected static
+            - media_volume:/app/media             # user uploads
         depends_on:
             db:
                 condition: service_healthy
@@ -62,11 +69,12 @@ services:
         image: nginx:alpine
         container_name: nginx
         ports:
-            - "127.0.0.1:8080:80"
+            - "80:80"
+
         volumes:
             - ./config/nginx/django.conf:/etc/nginx/conf.d/default.conf:ro
-            - static_volume:/app/static
-            - media_volume:/app/media
+            - static_volume:/staticfiles:ro       # same data, read-only
+            - media_volume:/media:ro
         depends_on:
             web:
                 condition: service_healthy

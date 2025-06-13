@@ -1,6 +1,11 @@
 django
+django-extensions
+djangorestframework
+djangorestframework-jwt
+djangorestframework_simplejwt
 psycopg[binary]
 celery[redis]==5.4.*
 celery==5.4.*
 redis>=4.6
 gunicorn
+pillow

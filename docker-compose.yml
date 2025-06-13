@@ -1,6 +1,12 @@
 services:
     web:
         build: .
+        command: gunicorn todoproject.wsgi:application -b 0.0.0.0:8000
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://localhost:8000/todo/", "||", "exit", "1"]
+            interval: 10s
+            retries: 5
+        expose: ["8000"]
         container_name: django_app
         ports:
             - 8000:8000
@@ -62,7 +68,9 @@ services:
             - static_volume:/app/static
             - media_volume:/app/media
         depends_on:
-            - web
+            web:
+                condition: service_healthy
+                
     
     
     

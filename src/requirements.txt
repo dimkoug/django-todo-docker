@@ -1,9 +1,6 @@
 django
 psycopg[binary]
-django-celery
-celery[redis]
-celery
-redis   
 celery[redis]==5.4.*
 celery==5.4.*
 redis>=4.6
+gunicorn

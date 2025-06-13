@@ -11,5 +11,5 @@ debug.log
 *.whl
 *.sqlite3
 migrations
-celerybeat-schedule
+celerybeat-*
 media

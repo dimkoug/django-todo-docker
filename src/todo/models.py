@@ -10,6 +10,10 @@ class Todo(models.Model):
         default_related_name = 'todos'
         verbose_name = 'todo'
         verbose_name_plural = 'todos'
+        indexes = [
+            models.Index(fields=['profile', 'name']),
+            models.Index(fields=['name']),
+        ]
     
     def __str__(self):
         return f"{self.name}"

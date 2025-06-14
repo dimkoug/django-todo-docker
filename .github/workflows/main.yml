@@ -1,53 +1,44 @@
-name: Django CI
-
-on:
-  push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
-
 jobs:
   test:
     runs-on: ubuntu-latest
+
+    # 👇 everything below this inherits working-directory: src
+    defaults:
+      run:
+        working-directory: src     # <-- adjust if your folder is different
+
     services:
       postgres:
         image: postgres:17
+        # … (unchanged)
+      redis:
+        image: redis:7
+        # … (unchanged)
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt     # no “src/” prefix needed
+
+      - name: Run tests
         env:
           POSTGRES_USER: user
           POSTGRES_PASSWORD: pass
           POSTGRES_DB: db
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd="pg_isready -U user -d db" --health-interval=10s --health-timeout=5s --health-retries=5
-      redis:
-        image: redis:7
-        ports:
-          - 6379:6379
-        options: >-
-          --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=5
-
-    steps:
-    - uses: actions/checkout@v4
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.12'
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r src/requirements.txt
-    - name: Run tests
-      env:
-        POSTGRES_USER: user
-        POSTGRES_PASSWORD: pass
-        POSTGRES_DB: db
-        DB_HOST: localhost
-        DB_PORT: 5432
-        EMAIL_HOST: dummy
-        EMAIL_HOST_USER: dummy
-        EMAIL_HOST_PASSWORD: dummy
-        SERVER_EMAIL: noreply@example.com
-      run: |
-        python src/manage.py migrate --noinput
-        python src/manage.py test
+          DB_HOST: localhost
+          DB_PORT: 5432
+          EMAIL_HOST: dummy
+          EMAIL_HOST_USER: dummy
+          EMAIL_HOST_PASSWORD: dummy
+          SERVER_EMAIL: noreply@example.com
+        run: |
+          python manage.py migrate --noinput
+          python manage.py test

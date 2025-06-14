@@ -5,7 +5,7 @@ services:
             sh -c "
             python manage.py migrate --noinput &&
             python manage.py collectstatic --noinput &&
-            gunicorn todoproject.wsgi:application -b 0.0.0.0:8000
+            gunicorn todoproject.wsgi:application -b 0.0.0.0:8000 --reload
             "
         healthcheck:
             test: ["CMD-SHELL", "curl -fs http://localhost:8000/todo/ || exit 1"]

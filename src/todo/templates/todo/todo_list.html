@@ -4,17 +4,58 @@
 
 
 {% block content %}
-    
-<a href="{%url 'todo:todo-add' %}">Add</a>
 
-<h1>Todos</h1>
-<ul>
-{% for obj in object_list %}
-    <li>{{ obj.name }}</li>
-{% empty %}
-    <li>No todos yet.</li>
-{% endfor %}
-</ul>
+<div class="row py-2">
+    <div class="col">
+        <h1>Todos</h1>
+    </div>
+</div>
+
+<div class="row py-2">
+    <div class="col">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        <a href="{%url 'todo:todo_add' %}" class="btn btn-primary">Add</a>
+        </div>
+    </div>
+</div>
+
+<div class="row py-2">
+    <div class="col">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for obj in object_list %}
+                <tr>
+                    <td>{{ obj.name }}</td>
+                    <td>
+                        <a href="{% url 'todo:todo_change' obj.id %}">Update</a>
+                        <a href="{% url 'todo:todo_delete' obj.id %}">Delete</a>
+                    </td>
+                {% empty %}
+                    <td colspan="2">No todos yet.</li>
+             
+
+
+                </tr>
+   {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+
+</div>
+
+    
+
+
+
+
 
 
 {% endblock content %}

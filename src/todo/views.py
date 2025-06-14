@@ -15,24 +15,48 @@ from .forms import TodoForm
 
 class TodoListView(LoginRequiredMixin,ListView):
     model = Todo
-
+    queryset = Todo.objects.select_related('profile')
+    
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(profile_id=self.request.user.profile)
+        return queryset
 
 
 class TodoDetailView(LoginRequiredMixin,DetailView):
     model = Todo
+    queryset = Todo.objects.select_related('profile')
+    
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(profile_id=self.request.user.profile)
+        return queryset
 
 
 class TodoCreateView(LoginRequiredMixin,SuccessUrlMixin,FormMixin,CreateView):
     model = Todo
     form_class = TodoForm
 
+    def form_valid(self,form):
+        form.instance.profile = self.request.user.profile
+        return super().form_valid(form)
+        
+
 
 
 class TodoUpdateView(LoginRequiredMixin,SuccessUrlMixin, FormMixin,UpdateView):
     model = Todo
     form_class = TodoForm
+    queryset = Todo.objects.select_related('profile')
+    
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(profile_id=self.request.user.profile)
+        return queryset
 
 
 
 class TodoDeleteView(LoginRequiredMixin,SuccessUrlMixin,DeleteView):
     model = Todo
+    queryset = Todo.objects.select_related('profile')
+    
+    def get_queryset(self):
+        queryset = super().get_queryset().filter(profile_id=self.request.user.profile)
+        return queryset

@@ -4,9 +4,18 @@
 
 
 {% block content %}
+    <div class="card">
+        <div class="card-body">
     <form method="post" novalidate>{% csrf_token %}
     {% include 'partials/_form.html' with form=form %}
     {% include 'partials/_form_buttons.html' with form=form %}
 </form>
+        </div>
+
+
+    </div>
+
+
+
 {% endblock content %}
     

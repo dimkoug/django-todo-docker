@@ -22,8 +22,10 @@ class BaseListView(LoginRequiredMixin,PaginationMixin, ListView):
             self.has_order = True
         app_name = self.model._meta.app_label
         add_url = reverse_lazy(f'{app_name}:{model_name}_add')
+        list_url = reverse_lazy(f'{app_name}:{model_name}_list')
         self.title = f'{model_name.capitalize()} List'
         self.add_url = add_url
+        self.list_url = list_url
         self.template = f'{app_name}/partials/_{model_name}_list.html'
         return super().dispatch(request, *args, **kwargs)
 

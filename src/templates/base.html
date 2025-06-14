@@ -29,7 +29,44 @@
     </div>
     
 
-        
+<script>
+    'use strict';
+    (function(w,d,$){
+        $(d).ready(function(){
+              $(".spinner-border").hide();
+
+
+$("body").on("click", '.page-link', function(e){
+    e.preventDefault();
+    $.when($.ajax({
+             url: $(this).attr("href"),
+             method: 'GET',
+             datatype: 'json',
+             beforeSend: function(){
+               $(".spinner-border").show();
+             },
+             complete: function(){
+               $(".spinner-border").hide();
+             }
+         })).then(function( resp, textStatus, jqXHR ) {
+           $(".res").html(resp);
+           $(".spinner-border").hide();
+         })
+
+    return false;
+})
+
+
+
+        }) /* doc ready */
+
+
+
+
+    })(window,document,jQuery)
+
+
+</script>        
     
 </body>
 </html>

@@ -1,62 +1,28 @@
-{% extends 'base.html' %}
-
-
-
-
+{% extends "base.html" %}
+{% load core %}
 {% block content %}
 
-<div class="row py-2">
-    <div class="col">
-        <h1>Todos</h1>
-    </div>
-</div>
 
-<div class="row py-2">
-    <div class="col">
-        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-        <a href="{%url 'todo:todo_add' %}" class="btn btn-primary">Add</a>
-        </div>
-    </div>
-</div>
-
-<div class="row py-2">
-    <div class="col">
-        <table class="table table-bordered table-striped">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for obj in object_list %}
-                <tr>
-                    <td>{{ obj.name }}</td>
-                    <td>
-                        <a href="{% url 'todo:todo_change' obj.id %}">Update</a>
-                        <a href="{% url 'todo:todo_delete' obj.id %}">Delete</a>
-                    </td>
-                {% empty %}
-                    <td colspan="2">No todos yet.</li>
-             
-
-
-                </tr>
-   {% endfor %}
-            </tbody>
-        </table>
-    </div>
-
-
-
-</div>
-
+<div class="card">
+  <div class="card-body">
+    {% include 'partials/_title.html' %}
+    {% include 'partials/_search_form.html' %}
+    {% include 'partials/_add_button.html' %}
+    {% include 'partials/_spinner.html' %}
     
+    
+        <div class="res">
+            {% get_template_name as template_name %}
+            {% with template=template_name %}
+            {% include  template %}
+          {% endwith %}
+        </div>
+  </div><!--card-body-->
 
 
+</div><!--card-->
 
 
 
 
 {% endblock content %}
-    

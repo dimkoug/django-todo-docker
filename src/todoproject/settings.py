@@ -30,7 +30,7 @@ SECRET_KEY = 'django-insecure-k(#^4xc*w7t%4gzk&4ceqw$1-l80pn@2&15jvhnq0fq#@-q_@6
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+ALLOWED_ORIGINS = ['127.0.0.1']
 
 MESSAGE_TAGS = {
     messages.DEBUG: 'alert-info',

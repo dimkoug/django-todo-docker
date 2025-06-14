@@ -59,6 +59,16 @@ This repository contains a minimal example of running a Django **todo** applicat
 
 The `src` directory contains the Django project (`todoproject`) and the `todo` app with simple models, views and Celery tasks.
 
+## Running Tests
+
+Automated tests live inside the `src` directory. Execute them using Django's test runner:
+
+```bash
+python src/manage.py test
+```
+
+GitHub Actions run the same command on every push or pull request to the `main` branch.
+
 ---
 
 This README aims to provide enough information to get the containers running quickly. Feel free to modify the setup to suit your own development workflow.

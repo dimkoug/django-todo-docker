@@ -10,6 +10,8 @@ __pycache__
 debug.log
 *.whl
 *.sqlite3
-migrations
 celerybeat-*
 media
+**/migrations/*.py
+**/migrations/*.pyc
+!**/migrations/__init__.py
